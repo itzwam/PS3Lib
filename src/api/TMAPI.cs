@@ -27,7 +27,7 @@ using System.IO;
 using System.Linq;
 using System.Reflection;
 using System.Text;
-using System.Windows.Forms;
+//using System.Windows.Forms;
 using System.Xml;
 
 using PS3Lib.NET;
@@ -331,7 +331,8 @@ namespace PS3Lib
                             LoadApi = Assembly.LoadFile(x86);
                         else
                         {
-                            MessageBox.Show("Target Manager API cannot be founded to:\r\n\r\n" + x86, "Error with PS3 API!", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                            throw new Exception("Target Manager API cannot be founded to:\r\n\r\n" + x86);
+                            //MessageBox.Show("Target Manager API cannot be founded to:\r\n\r\n" + x86, "Error with PS3 API!", MessageBoxButtons.OK, MessageBoxIcon.Error);
                         }
                     }
                 }

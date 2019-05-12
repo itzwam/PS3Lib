@@ -27,16 +27,17 @@ using System.Runtime.InteropServices;
 using System.Text;
 using System.Reflection;
 using System.Threading.Tasks;
-using System.Windows.Forms;
+//using System.Windows.Forms;
 using System.IO;
 using Microsoft.Win32;
 using System.Security.Cryptography;
 
 namespace PS3Lib
 {
+
     public class CCAPI
     {
-        [DllImport("kernel32.dll")]
+        [DllImport("kernel32.dll", EntryPoint = "LoadLibrary", SetLastError = true)]
         static extern IntPtr LoadLibrary(string dllName);
 
         [DllImport("kernel32.dll")]
@@ -185,27 +186,33 @@ namespace PS3Lib
                             }
                             else
                             {
-                                MessageBox.Show("Impossible to load CCAPI 2.60+", "This CCAPI.dll is not compatible", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                                throw new Exception("This CCAPI.dll is not compatible");
+                                // MessageBox.Show("Impossible to load CCAPI 2.60+", "This CCAPI.dll is not compatible", MessageBoxButtons.OK, MessageBoxIcon.Error);
                             }
                         }
                         else
                         {
-                            MessageBox.Show("Impossible to load CCAPI 2.60+", "CCAPI.dll cannot be loaded", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                            Console.WriteLine(Marshal.GetLastWin32Error().ToString());
+                            throw new Exception("CCAPI.dll cannot be loaded");
+                            // MessageBox.Show("Impossible to load CCAPI 2.60+", "CCAPI.dll cannot be loaded", MessageBoxButtons.OK, MessageBoxIcon.Error);
                         }
                     }
                     else
                     {
-                        MessageBox.Show("You need to install CCAPI 2.60+ to use this library.", "CCAPI.dll not found", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                        throw new Exception("CCAPI.dll not found");
+                        // MessageBox.Show("You need to install CCAPI 2.60+ to use this library.", "CCAPI.dll not found", MessageBoxButtons.OK, MessageBoxIcon.Error);
                     }
                 }
                 else
                 {
-                    MessageBox.Show("Invalid CCAPI folder, please re-install it.", "CCAPI not installed", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    throw new Exception("Invalid CCAPI folder, please re-install it.");
+                    // MessageBox.Show("Invalid CCAPI folder, please re-install it.", "CCAPI not installed", MessageBoxButtons.OK, MessageBoxIcon.Error);
                 }
             }
             else
             {
-                MessageBox.Show("You need to install CCAPI 2.60+ to use this library.", "CCAPI not installed", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                throw new Exception("You need to install CCAPI 2.60+ to use this library.");
+                // MessageBox.Show("You need to install CCAPI 2.60+ to use this library.", "CCAPI not installed", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
         }
 
@@ -670,7 +677,7 @@ namespace PS3Lib
         {
             if (string.IsNullOrEmpty(consoleID))
             {
-                MessageBox.Show("Cannot send an empty value", "Empty or null console id", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                // MessageBox.Show("Cannot send an empty value", "Empty or null console id", MessageBoxButtons.OK, MessageBoxIcon.Error);
                 return -1;
             }
             string newCID = String.Empty;
@@ -684,7 +691,7 @@ namespace PS3Lib
         {
             if (consoleID.Length <= 0)
             {
-                MessageBox.Show("Cannot send an empty value", "Empty or null console id", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                // MessageBox.Show("Cannot send an empty value", "Empty or null console id", MessageBoxButtons.OK, MessageBoxIcon.Error);
                 return -1;
             }
             return setConsoleIds((int)IdType.IDPS, consoleID);
@@ -695,7 +702,7 @@ namespace PS3Lib
         {
             if (string.IsNullOrEmpty(PSID))
             {
-                MessageBox.Show("Cannot send an empty value", "Empty or null psid", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                // MessageBox.Show("Cannot send an empty value", "Empty or null psid", MessageBoxButtons.OK, MessageBoxIcon.Error);
                 return -1;
             }
             string PS_ID = String.Empty;
@@ -709,7 +716,7 @@ namespace PS3Lib
         {
             if (consoleID.Length <= 0)
             {
-                MessageBox.Show("Cannot send an empty value", "Empty or null psid", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                // MessageBox.Show("Cannot send an empty value", "Empty or null psid", MessageBoxButtons.OK, MessageBoxIcon.Error);
                 return -1;
             }
             return setConsoleIds((int)IdType.PSID, consoleID);
@@ -792,7 +799,7 @@ namespace PS3Lib
             }
             catch
             {
-                MessageBox.Show("Incorrect value (empty)", "StringToByteArray Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                // MessageBox.Show("Incorrect value (empty)", "StringToByteArray Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
                 return new byte[1];
             }
         }
